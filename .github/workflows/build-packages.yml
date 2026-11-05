@@ -17,11 +17,11 @@ jobs:
         include:
           - platform: Windows x64
             os: windows-latest
-            command: npm run dist:win
+            command: npm run dist:win -- --publish never
             artifact: DeskFlies-Windows
           - platform: macOS universal
             os: macos-latest
-            command: npm run dist:mac -- --universal
+            command: npm run dist:mac -- --universal --publish never
             artifact: DeskFlies-macOS
 
     runs-on: ${{ matrix.os }}
