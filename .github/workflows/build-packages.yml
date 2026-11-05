@@ -1,0 +1,51 @@
+name: Build desktop packages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }} packages
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: Windows x64
+            os: windows-latest
+            command: npm run dist:win
+            artifact: DeskFlies-Windows
+          - platform: macOS universal
+            os: macos-latest
+            command: npm run dist:mac -- --universal
+            artifact: DeskFlies-macOS
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build packages
+        run: ${{ matrix.command }}
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/DeskFlies*
+          if-no-files-found: error
+          compression-level: 0

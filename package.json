@@ -1,0 +1,60 @@
+{
+  "name": "desk-flies",
+  "version": "1.0.0",
+  "description": "Release, recall and swat lifelike flies on your desktop (Windows / macOS)",
+  "main": "src/main/main.js",
+  "author": "DeskFlies",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:dir": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "30.0.0",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "com.deskflies.app",
+    "productName": "DeskFlies",
+    "copyright": "Copyright © 2026 DeskFlies",
+    "asar": true,
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "portable": {
+      "artifactName": "DeskFlies-Portable-${version}.${ext}"
+    },
+    "mac": {
+      "icon": "assets/icon.icns",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.entertainment",
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "artifactName": "DeskFlies-${version}.${ext}"
+    }
+  }
+}

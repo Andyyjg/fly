@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'">
+  <title>DeskFlies 控制台</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="mark"><i class="wing wing-a"></i><i class="wing wing-b"></i><i class="core"></i></div>
+      <div class="titles">
+        <h1>DeskFlies</h1>
+        <p>桌面苍蝇 · 控制台</p>
+      </div>
+      <button id="hideBtn" class="icon-btn" title="收起到托盘">×</button>
+    </header>
+
+    <section class="card mode-card">
+      <div class="section-title">当前模式<span class="hint">Esc 可退出捕蝇模式</span></div>
+      <div class="mode-switch">
+        <button class="mode-btn active" data-mode="watch">
+          <strong>观赏模式</strong>
+          <small>鼠标穿透，苍蝇自由飞</small>
+        </button>
+        <button class="mode-btn" data-mode="hunt">
+          <strong>捕蝇模式</strong>
+          <small>鼠标变苍蝇拍，点击挥拍</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="stat"><span id="aliveVal">0</span><label>桌面存活</label></div>
+      <div class="stat"><span id="killedVal">0</span><label>累计拍死</label></div>
+      <div class="stat"><span id="comboVal">0</span><label>当前连击</label></div>
+      <div class="stat"><span id="maxComboVal">0</span><label>最高连击</label></div>
+    </section>
+
+    <section class="card">
+      <div class="row"><label for="releaseRange">释放苍蝇</label><output id="releaseVal">5 只</output></div>
+      <input type="range" id="releaseRange" min="1" max="100" step="1" value="5">
+      <button class="primary" id="releaseBtn">释放 5 只苍蝇</button>
+      <div class="quick">
+        <button data-release="1">+1</button>
+        <button data-release="10">+10</button>
+        <button data-release="30">+30</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row"><label for="recallRange">回收苍蝇</label><output id="recallVal">5 只</output></div>
+      <input type="range" id="recallRange" min="1" max="100" step="1" value="5">
+      <div class="split">
+        <button class="secondary" id="recallBtn">回收 5 只</button>
+        <button class="ghost" id="clearBtn">全部回收</button>
+      </div>
+    </section>
+
+    <section class="card settings">
+      <div class="section-title">行为设置</div>
+      <div class="row"><label for="panicRange">怕人程度</label><output id="panicVal">110 px</output></div>
+      <input type="range" id="panicRange" min="0" max="300" step="10" value="110">
+      <div class="row"><label for="speedRange">飞行速度</label><output id="speedVal">1.0×</output></div>
+      <input type="range" id="speedRange" min="0.3" max="2.5" step="0.1" value="1">
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" id="soundChk" checked><i></i><span>拍击音效</span></label>
+        <label class="toggle"><input type="checkbox" id="buzzChk"><i></i><span>振翅嗡嗡声</span></label>
+        <label class="toggle"><input type="checkbox" id="breedChk"><i></i><span>放着不管会变多</span></label>
+        <label class="toggle"><input type="checkbox" id="displaysChk" checked><i></i><span>覆盖所有显示器</span></label>
+        <label class="toggle"><input type="checkbox" id="autoStartChk"><i></i><span>开机自动启动</span></label>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div id="shortcutRow1"></div>
+      <div id="shortcutRow2"></div>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
