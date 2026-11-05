@@ -25,6 +25,9 @@
       "src/**/*",
       "package.json"
     ],
+    "electronDownload": {
+      "customDir": "v30.0.0"
+    },
     "win": {
       "icon": "assets/icon.ico",
       "target": [
