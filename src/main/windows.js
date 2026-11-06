@@ -28,6 +28,8 @@ class WindowManager {
   constructor(store) {
     this.store = store;
     this.overlay = null;
+    this.overlayReady = false;
+    this.pendingOverlayMessages = [];
     this.panel = null;
     this.mode = MODES.WATCH;
     this.origin = { x: 0, y: 0 };
@@ -69,16 +71,22 @@ class WindowManager {
   }
 
   broadcast(channel, payload) {
-    this.sendTo(this.overlay, channel, payload);
+    if (this.overlayReady) this.sendTo(this.overlay, channel, payload);
     this.sendTo(this.panel, channel, payload);
   }
 
   toOverlay(channel, payload) {
+    if (!this.overlay || this.overlay.isDestroyed()) return;
+    if (!this.overlayReady) {
+      this.pendingOverlayMessages.push({ channel, payload });
+      return;
+    }
     this.sendTo(this.overlay, channel, payload);
   }
 
   createOverlay(restoreCount) {
     if (this.overlay && !this.overlay.isDestroyed()) this.overlay.destroy();
+    this.overlayReady = false;
 
     this.displays = this.activeDisplays;
     this.bounds = unionBounds(this.displays);
@@ -133,12 +141,20 @@ class WindowManager {
   }
 
   initOverlay() {
-    this.toOverlay(IPC.CONFIG, this.store.all());
-    this.toOverlay(IPC.DISPLAYS, this.displayData());
-    this.toOverlay(IPC.MODE, this.mode);
+    if (!this.overlay || this.overlay.isDestroyed() || this.overlayReady) return;
+
+    this.sendTo(this.overlay, IPC.CONFIG, this.store.all());
+    this.sendTo(this.overlay, IPC.DISPLAYS, this.displayData());
+    this.sendTo(this.overlay, IPC.MODE, this.mode);
     if (this.restoreCount) {
-      this.toOverlay(IPC.RELEASE, { count: this.restoreCount, instant: true });
+      this.sendTo(this.overlay, IPC.RELEASE, { count: this.restoreCount, instant: true });
       this.restoreCount = 0;
+    }
+
+    this.overlayReady = true;
+    const pending = this.pendingOverlayMessages.splice(0);
+    for (const message of pending) {
+      this.sendTo(this.overlay, message.channel, message.payload);
     }
   }
 

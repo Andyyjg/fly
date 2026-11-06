@@ -1,6 +1,6 @@
 {
   "name": "desk-flies",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Release, recall and swat lifelike flies on your desktop (Windows / macOS)",
   "main": "src/main/main.js",
   "author": "DeskFlies",
